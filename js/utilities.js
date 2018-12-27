@@ -1,5 +1,5 @@
 function getItems(callback) {
-  chrome.storage.local.get('channels', function(storage) {
+  browser.storage.local.get('channels', function(storage) {
     if (typeof storage.channels === 'undefined') {
       storage.channels = [];
       setItems(storage.channels);
@@ -67,23 +67,23 @@ function removeItems(itemsToRemove, callback) {
 }
 
 function setItems(items, callback) {
-  chrome.storage.local.set({
+  browser.storage.local.set({
     channels: items
   });
-  chrome.runtime.sendMessage({ name: 'itemsUpdated' });
+  browser.runtime.sendMessage({ name: 'itemsUpdated' });
   if (typeof callback !== 'undefined')
     callback();
 }
 
 function getSettings(callback) {
-  chrome.storage.local.get('settings', function(storage) {
+  browser.storage.local.get('settings', function(storage) {
     if (typeof storage.settings === 'undefined') {
       storage.settings = {
         enableicon: true,
         redirect: true,
         password: '',
         version: {
-          number: chrome.runtime.getManifest().version,
+          number: browser.runtime.getManifest().version,
           updated: false,
           installed: true
         }
@@ -99,9 +99,9 @@ function getSettings(callback) {
       if (typeof storage.settings.password === 'undefined') {
         setSetting('password', '');
       }
-      if (typeof storage.settings.version === 'undefined' || storage.settings.version.number !== chrome.runtime.getManifest().version) {
+      if (typeof storage.settings.version === 'undefined' || storage.settings.version.number !== browser.runtime.getManifest().version) {
         setSetting('version', {
-          number: chrome.runtime.getManifest().version,
+          number: browser.runtime.getManifest().version,
           updated: true,
           installed: false
         });
@@ -119,15 +119,15 @@ function setSetting(setting, value) {
 }
 
 function setSettings(settings) {
-  chrome.storage.local.set({
+  browser.storage.local.set({
     settings: settings
   });
-  chrome.runtime.sendMessage({ 'name': 'settingsUpdated' });
+  browser.runtime.sendMessage({ 'name': 'settingsUpdated' });
 }
 
 function translateHTMLfile() {
   function findTranslation(match, p1) {
-    return chrome.i18n.getMessage(p1);
+    return browser.i18n.getMessage(p1);
   }
   document.head.innerHTML = document.head.innerHTML.replace(/__MSG_(.+?)__/g, findTranslation);
   document.body.innerHTML = document.body.innerHTML.replace(/__MSG_(.+?)__/g, findTranslation);

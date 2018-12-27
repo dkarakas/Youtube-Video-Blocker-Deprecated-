@@ -2,7 +2,7 @@ translateHTMLfile();
 getSettings(function(storage) {
   document.querySelector('#button-settings').addEventListener('click', function(e) {
     e.preventDefault();
-    chrome.runtime.openOptionsPage();
+    browser.runtime.openOptionsPage();
   });
   if (storage.password !== '') {
     initLogin(storage.password);
@@ -90,15 +90,15 @@ function buildList() {
 function modifyFooterText(type, count) {
   var footerString = '';
   if (type === 'search' && count === 0)
-    footerString = chrome.i18n.getMessage('paNoSearchResults');
+    footerString = browser.i18n.getMessage('paNoSearchResults');
   else if (type === 'search' && count === 1)
-    footerString = '1 ' + chrome.i18n.getMessage('paSearchResult');
+    footerString = '1 ' + browser.i18n.getMessage('paSearchResult');
   else if (type === 'search' && count > 1)
-    footerString = count + ' ' + chrome.i18n.getMessage('paSearchResults');
+    footerString = count + ' ' + browser.i18n.getMessage('paSearchResults');
   else if (type === 'normal' && (count === 0 || count > 1))
-    footerString = count + ' ' + chrome.i18n.getMessage('paItemsTotal');
+    footerString = count + ' ' + browser.i18n.getMessage('paItemsTotal');
   else if (type === 'normal' && count === 1)
-    footerString = '1 ' + chrome.i18n.getMessage('paItemTotal');
+    footerString = '1 ' + browser.i18n.getMessage('paItemTotal');
   document.body.querySelector('footer').innerHTML = footerString;
 }
 
@@ -152,7 +152,7 @@ function importItems(e) {
       reader.onload = function() {
         var json = reader.result;
         if (json) {
-          chrome.runtime.sendMessage({ name: 'importItems', data: json }, buildList);
+          browser.runtime.sendMessage({ name: 'importItems', data: json }, buildList);
         }
       };
       reader.readAsText(file);

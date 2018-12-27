@@ -1,7 +1,7 @@
 var containerList = [{
-    container: '.lohp-large-shelf-container',
-    channelname: '.content-uploader > a',
-    videotitle: 'a.lohp-video-link'
+    container: 'ytd-grid-video-renderer',
+    channelname: 'yt-formatted-string > a',
+    videotitle: 'a#video-title.yt-simple-endpoint.style-scope.ytd-grid-video-renderer'
   },
   {
     container: '.lohp-medium-shelf',
@@ -55,7 +55,7 @@ var containerList = [{
   }
 ];
 document.addEventListener('DOMContentLoaded', function(event) {
-  chrome.runtime.sendMessage({ 'name': 'pageActionLoaded' });
+  browser.runtime.sendMessage({ 'name': 'pageActionLoaded' });
   getSettings(function(storage) {
     if (storage.version.updated === true) {
       var container = document.createElement('div');
@@ -67,7 +67,7 @@ document.addEventListener('DOMContentLoaded', function(event) {
       var content = document.createElement('div');
       content.classList.add('videoblocker-content');
       content.innerHTML = '' +
-        '<h1><img src="' + chrome.extension.getURL("images/icons/icon32.png") + '" alt="__MSG_extName__"> <span>Journeys Youtube Video Blocker - Extension updated (1.0.2)</span></h1>' +
+        '<h1><img src="' + browser.extension.getURL("images/icons/icon32.png") + '" alt="__MSG_extName__"> <span>Journeys Youtube Video Blocker - Extension updated (1.0.2)</span></h1>' +
         '<hr>' +
         '<p>Journeys Youtube Video Blocker extension has been successfully updated. Below, I have listed the changes.</p>' +
         '<ul>' +
@@ -79,7 +79,7 @@ document.addEventListener('DOMContentLoaded', function(event) {
       inner.appendChild(content);
       document.getElementById('videoblocker-closewindow').addEventListener('click', function(event) {
         document.querySelector('.videoblocker-container').remove();
-        setSetting('version', { number: chrome.runtime.getManifest().version, updated: false, installed: false });
+        setSetting('version', { number: browser.runtime.getManifest().version, updated: false, installed: false });
       }, false);
     }
     if (storage.version.installed === true) {
@@ -92,7 +92,7 @@ document.addEventListener('DOMContentLoaded', function(event) {
       var content = document.createElement('div');
       content.classList.add('videoblocker-content');
       content.innerHTML = '' +
-        '<h1><img src="' + chrome.extension.getURL("images/icons/icon32.png") + '" alt="__MSG_extName__"> <span>Journeys Youtube Video Blocker - Extension installed</span></h1>' +
+        '<h1><img src="' + browser.extension.getURL("images/icons/icon32.png") + '" alt="__MSG_extName__"> <span>Journeys Youtube Video Blocker - Extension installed</span></h1>' +
         '<hr>' +
         '<p>Journeys Youtube Video Blocker extension has been successfully installed. Below, I have listed the key features.</p>' +
         '<ul>' +
@@ -107,7 +107,7 @@ document.addEventListener('DOMContentLoaded', function(event) {
       inner.appendChild(content);
       document.getElementById('videoblocker-closewindow').addEventListener('click', function(event) {
         document.querySelector('.videoblocker-container').remove();
-        setSetting('version', { number: chrome.runtime.getManifest().version, updated: false, installed: false });
+        setSetting('version', { number: browser.runtime.getManifest().version, updated: false, installed: false });
       }, false);
     }
   });
@@ -133,9 +133,12 @@ function hideVideos() {
   if (document.querySelector('#watch-header .watch-title') !== null)
     pageVideoTitle = document.querySelector('#watch-header .watch-title').textContent.trim();
   getItems(function(storage) {
-    var items = storage;
+    var items = ['CouRage', 'BasicallyIDoWrk', 'Muselk', 'SypherPK', 'TwitchReacts', 'Tfue', 'Daequan Loco', 'Locandro', 'DrLupo'];
     loop1: for (var i = 0; i < containerList.length; i++) {
       var containers = document.body.querySelectorAll(containerList[i].container);
+      console.log(containers[0].childElementCount);
+      let test = containers[0].querySelector("a#video-title.yt-simple-endpoint.style-scope.ytd-grid-video-renderer");
+      let test2 = containers[0].querySelector(containerList[i].channelname);
       loop2: for (var j = 0; j < containers.length; j++) {
         var videotitle = (typeof containerList[i].videotitle !== 'undefined' && containers[j].querySelector(containerList[i].videotitle) !== null) ? containers[j].querySelector(containerList[i].videotitle).textContent.trim() : '',
           channelname = (typeof containerList[i].channelname !== 'undefined' && containers[j].querySelector(containerList[i].channelname) !== null) ? containers[j].querySelector(containerList[i].channelname).textContent.trim() : '',
@@ -144,8 +147,8 @@ function hideVideos() {
         if (containerList[i].container === '.ytp-endscreen-content .ytp-videowall-still' && channelname.indexOf('\u2022') > -1)
           channelname = channelname.substr(0, channelname.indexOf('\u2022')).trim();
         loop3: for (var k = 0; k < items.length; k++) {
-          var key = items[k].key,
-            type = items[k].type,
+          var key = items[k],
+            type = 'channel',
             regexpobj = key.match(/^\/(.+?)\/(.+)?/);
           if (regexpobj !== null) {
             try {
@@ -235,7 +238,7 @@ window.addEventListener('contextmenu', function(event) {
       break;
   }
 });
-chrome.runtime.onMessage.addListener(function(message) {
+browser.runtime.onMessage.addListener(function(message) {
   if (message.name === 'contextMenuClicked' && contextChannelName !== null) {
     addItem({ key: contextChannelName, type: 'channel' }, hideVideos);
   }

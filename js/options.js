@@ -73,12 +73,12 @@ function initSettings() {
           document.body.querySelector('input[name="oldpassword"]').value = "";
           document.body.querySelector('input[name="newpassword1"]').value = "";
           document.body.querySelector('input[name="newpassword2"]').value = "";
-          document.getElementById('password-error').textContent = chrome.i18n.getMessage('passwordChanged');
+          document.getElementById('password-error').textContent = browser.i18n.getMessage('passwordChanged');
         } else {
-          document.getElementById('password-error').textContent = chrome.i18n.getMessage('wrongMatchingPasswords');
+          document.getElementById('password-error').textContent = browser.i18n.getMessage('wrongMatchingPasswords');
         }
       } else {
-        document.getElementById('password-error').textContent = chrome.i18n.getMessage('wrongCurrentPassword');
+        document.getElementById('password-error').textContent = browser.i18n.getMessage('wrongCurrentPassword');
       }
     });
   });

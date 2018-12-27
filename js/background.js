@@ -1,24 +1,24 @@
 getSettings(function(settings) {
   if (settings.enableicon === true) {
-    chrome.browserAction.enable();
+    browser.browserAction.enable();
   } else {
-    chrome.browserAction.disable();
+    browser.browserAction.disable();
   }
-  chrome.contextMenus.removeAll(function() {
+  browser.contextMenus.removeAll(function() {
     if (settings.password === '')
       createContextMenu();
   });
 });
-chrome.runtime.onMessage.addListener(function(message, sender, sendResponse) {
+browser.runtime.onMessage.addListener(function(message, sender, sendResponse) {
   switch (message.name) {
     case 'pageActionLoaded':
       getSettings(function(settings) {
         if (settings.enableicon === true) {
-          chrome.browserAction.enable();
+          browser.browserAction.enable();
         } else {
-          chrome.browserAction.disable();
+          browser.browserAction.disable();
         }
-        chrome.contextMenus.removeAll(function() {
+        browser.contextMenus.removeAll(function() {
           if (settings.password === '')
             createContextMenu();
         });
@@ -27,18 +27,18 @@ chrome.runtime.onMessage.addListener(function(message, sender, sendResponse) {
     case 'settingsUpdated':
       getSettings(function(settings) {
         if (settings.enableicon === true) {
-          chrome.browserAction.enable();
+          browser.browserAction.enable();
         } else {
-          chrome.browserAction.disable();
+          browser.browserAction.disable();
         }
-        chrome.contextMenus.removeAll(function() {
+        browser.contextMenus.removeAll(function() {
           if (settings.password === '')
             createContextMenu();
         });
       });
       break;
     case 'itemsUpdated':
-      chrome.tabs.executeScript(null, {
+      browser.tabs.executeScript(null, {
         code: 'hideVideos();'
       });
       break;
@@ -50,9 +50,9 @@ chrome.runtime.onMessage.addListener(function(message, sender, sendResponse) {
 });
 
 function createContextMenu() {
-  chrome.contextMenus.create({
+  browser.contextMenus.create({
     'id': 'video_blocker_context_menu',
-    'title': chrome.i18n.getMessage('cmBlockVideos'),
+    'title': browser.i18n.getMessage('cmBlockVideos'),
     'enabled': true,
     'contexts': [
       'link'
@@ -67,8 +67,8 @@ function createContextMenu() {
     ]
   });
 }
-chrome.contextMenus.onClicked.addListener(function(info, tab) {
-  chrome.tabs.sendMessage(tab.id, {
+browser.contextMenus.onClicked.addListener(function(info, tab) {
+  browser.tabs.sendMessage(tab.id, {
     'name': 'contextMenuClicked'
   });
 });
