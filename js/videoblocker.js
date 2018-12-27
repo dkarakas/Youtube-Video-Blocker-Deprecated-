@@ -123,6 +123,11 @@ document.addEventListener('DOMContentLoaded', function(event) {
   mutationObserver.observe(mutationTarget, mutationConfig);
 });
 
+document.addEventListener('DOMNodeInserted', function(event) {
+	hideVideos();
+});
+
+var contextChannelName;
 function hideVideos() {
   var pageChannelName = undefined;
   if (document.querySelector('.branded-page-header-title-link') !== null)
@@ -133,10 +138,9 @@ function hideVideos() {
   if (document.querySelector('#watch-header .watch-title') !== null)
     pageVideoTitle = document.querySelector('#watch-header .watch-title').textContent.trim();
   getItems(function(storage) {
-    var items = ['CouRage', 'BasicallyIDoWrk', 'Muselk', 'SypherPK', 'TwitchReacts', 'Tfue', 'Daequan Loco', 'Locandro', 'DrLupo'];
+    var items = ['CouRage', 'BasicallyIDoWrk', 'Muselk', 'SypherPK', 'TwitchReacts', 'Tfue', 'Daequan Loco', 'Locandro', 'DrLupo', 'BCC Trolling', 'Cizzorz'];
     loop1: for (var i = 0; i < containerList.length; i++) {
       var containers = document.body.querySelectorAll(containerList[i].container);
-      console.log(containers[0].childElementCount);
       let test = containers[0].querySelector("a#video-title.yt-simple-endpoint.style-scope.ytd-grid-video-renderer");
       let test2 = containers[0].querySelector(containerList[i].channelname);
       loop2: for (var j = 0; j < containers.length; j++) {
@@ -225,7 +229,6 @@ function hideVideos() {
   });
   fixThumbnails();
 }
-var contextChannelName;
 window.addEventListener('contextmenu', function(event) {
   contextChannelName = null;
   for (var i = 0; i < containerList.length; i++) {
