@@ -1,8 +1,8 @@
 var containerList = [{
-    container: '.lohp-large-shelf-container',
-    channelname: '.content-uploader > a',
-    videotitle: 'a.lohp-video-link'
-  },
+  container: 'ytd-grid-video-renderer',
+  channelname: 'yt-formatted-string > a',
+  videotitle: 'a#video-title.yt-simple-endpoint.style-scope.ytd-grid-video-renderer'   }
+  /*,
   {
     container: '.lohp-medium-shelf',
     channelname: '.content-uploader > a',
@@ -52,7 +52,7 @@ var containerList = [{
     container: '.ytp-endscreen-content .ytp-videowall-still',
     channelname: '.ytp-videowall-still-info-author',
     videotitle: '.ytp-videowall-still-info-title'
-  }
+  }*/
 ];
 document.addEventListener('DOMContentLoaded', function(event) {
   chrome.runtime.sendMessage({ 'name': 'pageActionLoaded' });
@@ -222,19 +222,22 @@ function hideVideos() {
   });
   fixThumbnails();
 }
+
+
 var contextChannelName;
+//triggered when you right click a video
 window.addEventListener('contextmenu', function(event) {
   contextChannelName = null;
   for (var i = 0; i < containerList.length; i++) {
-    if (event.target.closest(containerList[i].container) !== null) {
+    if (event.target.closest(containerList[i].container) !== null) {//checks if the event comes from a video(thumbnail)
       contextChannelName = event.target.closest(containerList[i].container).querySelector(containerList[i].channelname).textContent.trim();
-      if (containerList[i].container === '.ytp-endscreen-content .ytp-videowall-still' && contextChannelName.indexOf('\u2022') > -1)
-        contextChannelName = contextChannelName.substr(0, contextChannelName.indexOf('\u2022')).trim();
     }
+    console.log((contextChannelName));
     if (contextChannelName !== null)
       break;
   }
 });
+
 chrome.runtime.onMessage.addListener(function(message) {
   if (message.name === 'contextMenuClicked' && contextChannelName !== null) {
     addItem({ key: contextChannelName, type: 'channel' }, hideVideos);
