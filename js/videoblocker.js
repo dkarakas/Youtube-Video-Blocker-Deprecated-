@@ -6,11 +6,16 @@ var containerList = [{
     container: 'ytd-video-renderer',
     channelname: 'yt-formatted-string > a',
     videotitle: 'div#title-wrapper.style-scope.ytd-video-renderer'
+  },
+  {
+    container: 'div#primary-inner',
+    channelname: 'yt-formatted-string#owner-name',
+    videotitle: 'h1 > yt-formatted-string'
   }
   /*,
   {
     container: '.lohp-medium-shelf',
-    channelname: '.content-uploader > a',
+    channelname: '.content-uploader > a',yt-formatted-string > a
     videotitle: 'a.lohp-video-link'
   },
   {
@@ -130,28 +135,24 @@ document.addEventListener('DOMContentLoaded', function(event) {
 
 function hideVideos() {
   var pageChannelName = undefined;
-  if (document.querySelector('.branded-page-header-title-link') !== null)
-    pageChannelName = document.querySelector('.branded-page-header-title-link').textContent.trim();
-  else if (document.querySelector('#watch-header .yt-user-info .g-hovercard') !== null)
-    pageChannelName = document.querySelector('#watch-header .yt-user-info .g-hovercard').textContent.trim();
+  if (document.querySelector('yt-formatted-string#owner-name') !== null)
+    pageChannelName = document.querySelector('yt-formatted-string#owner-name').textContent.trim();
   var pageVideoTitle = undefined;
-  if (document.querySelector('#watch-header .watch-title') !== null)
-    pageVideoTitle = document.querySelector('#watch-header .watch-title').textContent.trim();
+  if (document.querySelector('h1 > yt-formatted-string') !== null)
+    pageVideoTitle = document.querySelector('h1 > yt-formatted-string').textContent.trim();
   getItems(function(storage) {
     var items = storage;
     loop1: for (var i = 0; i < containerList.length; i++) {
       var containers = document.body.querySelectorAll(containerList[i].container);
       loop2: for (var j = 0; j < containers.length; j++) {
-        let test = containers[j].querySelector(containerList[i].videotitle).textContent.trim();
-        console.log('Title - ' + i + ' ' + test);
-        test = containers[j].querySelector(containerList[i].channelname).textContent.trim();
-        console.log('Channel - ' + i + ' '  + test);
+        // let test = containers[j].querySelector(containerList[i].videotitle).textContent.trim();
+        // console.log('Title - ' + i + ' ' + test);
+        // test = containers[j].querySelector(containerList[i].channelname).textContent.trim();
+        // console.log('Channel - ' + i + ' '  + test);
         var videotitle = (typeof containerList[i].videotitle !== 'undefined' && containers[j].querySelector(containerList[i].videotitle) !== null) ? containers[j].querySelector(containerList[i].videotitle).textContent.trim() : '',
           channelname = (typeof containerList[i].channelname !== 'undefined' && containers[j].querySelector(containerList[i].channelname) !== null) ? containers[j].querySelector(containerList[i].channelname).textContent.trim() : '',
           block = false,
           blockPage = false;
-        if (containerList[i].container === '.ytp-endscreen-content .ytp-videowall-still' && channelname.indexOf('\u2022') > -1)
-          channelname = channelname.substr(0, channelname.indexOf('\u2022')).trim();
         loop3: for (var k = 0; k < items.length; k++) {
           var key = items[k].key,
             type = items[k].type,
@@ -207,15 +208,8 @@ function hideVideos() {
               break;
           }
           if (blockPage === true) {
-            if (/.+&list=.+/.test(window.location.href) === true) {
-              document.body.querySelector('#player-api .ytp-next-button').click();
-              break loop1;
-            } else {
-              getSettings(function(storage) {
-                if (storage.redirect === true) {
+            if (storage.redirect === true) {
                   window.location.replace('/');
-                }
-              });
             }
           }
           if (block === true) {
@@ -240,7 +234,6 @@ window.addEventListener('contextmenu', function(event) {
   for (var i = 0; i < containerList.length; i++) {
     if (event.target.closest(containerList[i].container) !== null) {//checks if the event comes from a video(thumbnail)
       contextChannelName = event.target.closest(containerList[i].container).querySelector(containerList[i].channelname).textContent.trim();
-      console.log('Item worked - ' + i + ' ' + contextChannelName);
     }
      if (contextChannelName !== null)
       break;
