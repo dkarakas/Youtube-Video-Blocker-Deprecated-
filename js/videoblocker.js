@@ -1,7 +1,12 @@
 var containerList = [{
   container: 'ytd-grid-video-renderer',
   channelname: 'yt-formatted-string > a',
-  videotitle: 'a#video-title.yt-simple-endpoint.style-scope.ytd-grid-video-renderer'   }
+  videotitle: 'a#video-title.yt-simple-endpoint.style-scope.ytd-grid-video-renderer'   },
+  {
+    container: 'ytd-video-renderer',
+    channelname: 'yt-formatted-string > a',
+    videotitle: 'div#title-wrapper.style-scope.ytd-video-renderer'
+  }
   /*,
   {
     container: '.lohp-medium-shelf',
@@ -137,6 +142,10 @@ function hideVideos() {
     loop1: for (var i = 0; i < containerList.length; i++) {
       var containers = document.body.querySelectorAll(containerList[i].container);
       loop2: for (var j = 0; j < containers.length; j++) {
+        let test = containers[j].querySelector(containerList[i].videotitle).textContent.trim();
+        console.log('Title - ' + i + ' ' + test);
+        test = containers[j].querySelector(containerList[i].channelname).textContent.trim();
+        console.log('Channel - ' + i + ' '  + test);
         var videotitle = (typeof containerList[i].videotitle !== 'undefined' && containers[j].querySelector(containerList[i].videotitle) !== null) ? containers[j].querySelector(containerList[i].videotitle).textContent.trim() : '',
           channelname = (typeof containerList[i].channelname !== 'undefined' && containers[j].querySelector(containerList[i].channelname) !== null) ? containers[j].querySelector(containerList[i].channelname).textContent.trim() : '',
           block = false,
@@ -231,12 +240,16 @@ window.addEventListener('contextmenu', function(event) {
   for (var i = 0; i < containerList.length; i++) {
     if (event.target.closest(containerList[i].container) !== null) {//checks if the event comes from a video(thumbnail)
       contextChannelName = event.target.closest(containerList[i].container).querySelector(containerList[i].channelname).textContent.trim();
+      console.log('Item worked - ' + i + ' ' + contextChannelName);
     }
-    console.log((contextChannelName));
-    if (contextChannelName !== null)
+     if (contextChannelName !== null)
       break;
   }
 });
+
+document.addEventListener('DOMNodeInserted', function (event) {
+  hideVideos();
+})
 
 chrome.runtime.onMessage.addListener(function(message) {
   if (message.name === 'contextMenuClicked' && contextChannelName !== null) {
