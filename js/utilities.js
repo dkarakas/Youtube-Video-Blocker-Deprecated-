@@ -81,7 +81,7 @@ function getSettings(callback) {
       storage.settings = {
         enableicon: true,
         redirect: true,
-        timer: 120,//keeps timer in seconds
+        timer: 1500,//keeps timer in seconds
         time_so_far: 1,//keeps track of the time so far in seconds
         last_date: 0,//only using the day of the month (no month or year ---> simplificaiton)
         password: '',
