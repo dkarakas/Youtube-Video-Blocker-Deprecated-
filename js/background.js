@@ -9,7 +9,8 @@ getSettings(function(settings) {
       createContextMenu();
   });
 });
-chrome.runtime.onMessage.addListener(function(message, sender, sendResponse) {
+
+chrome.runtime.onMessageExternal.addListener(function(message, sender, sendResponse) {
   switch (message.name) {
     case 'pageActionLoaded':
       getSettings(function(settings) {

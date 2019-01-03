@@ -44,6 +44,7 @@
           <li id="button-import">__MSG_paImport__</li>
           <li id="button-export">__MSG_paExport__</li>
           <li id="button-empty">__MSG_paEmpty__</li>
+          <li id="button-timer">__MSG_paTimer__</li>
         </ul>
       </div>
       <div class="list-actions">
@@ -52,11 +53,13 @@
         </div>
         <div id="action-add" class="action">
           <form>
-            <input type="text"><select>
+            <input type="text">
+              <select>
 							<option value="channel">__MSG_paChannel__</option>
 							<option value="wildcard">__MSG_paWildcard__</option>
 							<option value="keyword">__MSG_paKeyword__</option>
-						</select><button type="submit">&#10133;</button>
+              </select>
+            <button type="submit">&#10133;</button>
           </form>
         </div>
         <div id="action-import">
@@ -65,6 +68,10 @@
         <div id="action-empty" class="action">
           <span>__MSG_paEmptyConfirm__</span><button>__MSG_paYes__</button>
         </div>
+        <div id="action-timer" class="action">
+          <span>Time left to watch videos today is: 0 </span>
+        </div>
+
       </div>
       <div class="list-body">
         <ul data-noitems="__MSG_paNothingHere__">

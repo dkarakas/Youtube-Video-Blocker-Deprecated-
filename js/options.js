@@ -19,7 +19,7 @@ getSettings(function(storage) {
     document.getElementById('change-redirect').setAttribute('checked', 'true');
   }
   if (storage.password !== '') {
-    initLogin(storage.password);
+    initLogin(storagstoragee.password);
   } else {
     initSettings();
   }
@@ -59,6 +59,10 @@ function initSettings() {
     else
       redirect = true;
     setSetting('redirect', redirect);
+  });
+  document.getElementById('change-timer').addEventListener('submit', function (e) {
+    var minutes = document.body.querySelector('input[name="change-timer-time"]').value;
+    setSetting('minutes', minutes);
   });
   document.getElementById('change-password').addEventListener('submit', function(e) {
     e.preventDefault();

@@ -81,6 +81,9 @@ function getSettings(callback) {
       storage.settings = {
         enableicon: true,
         redirect: true,
+        timer: 120,//keeps timer in seconds
+        time_so_far: 1,//keeps track of the time so far in seconds
+        last_date: 0,//only using the day of the month (no month or year ---> simplificaiton)
         password: '',
         version: {
           number: chrome.runtime.getManifest().version,
@@ -95,6 +98,15 @@ function getSettings(callback) {
       }
       if (typeof storage.settings.redirect === 'undefined') {
         setSetting('redirect', true);
+      }
+      if (typeof storage.settings.timer === 'undefined'){
+        setSetting('timer', 1200);//setting the timer to default 20 min
+      }
+      if (typeof storage.settings.time_so_far === 'undefined'){
+        setSetting('time_so_far', 0);//setting the timer to default 20 min
+      }
+      if (typeof storage.settings.last_date === 'undefined'){
+        setSetting('last_date', 0);//setting the timer to default 20 min
       }
       if (typeof storage.settings.password === 'undefined') {
         setSetting('password', '');

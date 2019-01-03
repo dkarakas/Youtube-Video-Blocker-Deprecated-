@@ -51,6 +51,14 @@
     "description": "Login",
     "message": "Login"
   },
+  "opTimerSet": {
+    "description": "Timer",
+    "message": "Timer"
+  },
+  "opTimerSetDescription": {
+    "description": "How long are you allowed to watch banned videos",
+    "message": "How long are you allowing yourself to watch banned videos"
+  },
   "opLoginDescription": {
     "description": "Login description",
     "message": "To access the settings, you'll need to enter your password for the extension."
@@ -114,6 +122,10 @@
   "paExport": {
     "description": "Export",
     "message": "Export"
+  },
+  "paTimer":{
+    "description": "Timer",
+    "message": "Timer"
   },
   "paImport": {
     "description": "Import",

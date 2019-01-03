@@ -1,4 +1,6 @@
 translateHTMLfile();
+setInterval(update_timer,1000);//timer increments
+
 getSettings(function(storage) {
   document.querySelector('#button-settings').addEventListener('click', function(e) {
     e.preventDefault();
@@ -10,6 +12,13 @@ getSettings(function(storage) {
     initList();
   }
 });
+
+function update_timer(){
+  getSettings(function(storage) {
+    let timer = document.body.querySelector('div#action-timer');
+    timer.innerHTML= 'Time left to watch videos today is: '+ ((storage.timer - storage.time_so_far)/60) + ' minutes';
+  });
+}
 
 function initLogin(password) {
   document.body.querySelector('.container-loading').style.display = "none";
@@ -57,6 +66,9 @@ function initList() {
           break;
         case 'button-empty':
           document.body.querySelector('#action-empty').style.display = 'block';
+          break;
+        case 'button-timer':
+          document.body.querySelector('#action-timer').style.display = 'block';
           break;
       }
     });
