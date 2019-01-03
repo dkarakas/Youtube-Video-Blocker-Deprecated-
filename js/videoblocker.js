@@ -294,20 +294,24 @@ function timer() {
       if (typeof storage.time_so_far === 'undefined') {
         new_time = 0;
       }
-      new_time = parseInt(new_time) + 60;
+      new_time = parseInt(new_time) + 1;
       let date = new Date();
       let day_of_date = date.getDate();
-      let test = storage.last_date;
       if(day_of_date !== parseInt(storage.last_date)){
         new_time = 0;
-        setSetting('last_date', day_of_date);
+        // setSetting('last_date', day_of_date);
+        storage.last_date = day_of_date;
         blockPage_timer = false;
       }
+      // setSetting('time_so_far', new_time);
+      storage.time_so_far = new_time;
+      chrome.storage.local.set({
+        settings: storage
+      });
+      chrome.runtime.sendMessage({ 'name': 'settingsUpdated' });
       if(new_time > storage.timer){
         blockPage_timer = true;
-        return;
       }
-      setSetting('time_so_far', new_time);//setting the timer to default 20 min
     });
   }else{
     getSettings(function(storage) {
@@ -320,39 +324,6 @@ function timer() {
       }
     });
   }
-
-  // if(forbidden_page_opened === true){
-  //   getSettings(function(storage) {
-  //     let new_time = storage.time_so_far;
-  //     if (typeof storage.time_so_far === 'undefined') {
-  //       new_time = 0;
-  //     }
-  //     new_time = parseInt(new_time) + 60;
-  //     let date = new Date();
-  //     let day_of_date = date.getDate();
-  //     let test = storage.last_date;
-  //     if(day_of_date !== parseInt(storage.last_date)){
-  //       new_time = 0;
-  //       setSetting('last_date', day_of_date);
-  //       blockPage_timer = false;
-  //     }
-  //     if(new_time > storage.timer){
-  //       blockPage_timer = true;
-  //       return;
-  //     }
-  //     setSetting('time_so_far', new_time);//setting the timer to default 20 min
-  //   });
-  // }else{
-  //   getSettings(function(storage) {
-  //     blockPage_timer = false;
-  //     let new_time = storage.time_so_far;
-  //     new_time = new_time + 30;
-  //     if(new_time > storage.timer){
-  //       blockPage_timer = true;
-  //       return;
-  //     }
-  //   });
-  // }
 }
 
 

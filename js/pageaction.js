@@ -16,7 +16,7 @@ getSettings(function(storage) {
 function update_timer(){
   getSettings(function(storage) {
     let timer = document.body.querySelector('div#action-timer');
-    timer.innerHTML= 'Time left to watch videos today is: '+ ((storage.timer - storage.time_so_far)/60) + ' minutes';
+    timer.innerHTML= 'Time left to watch videos today is: '+ Math.round((storage.timer - storage.time_so_far)/60) + ' minutes';
   });
 }
 
